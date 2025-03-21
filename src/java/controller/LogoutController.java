@@ -31,7 +31,7 @@ public class LogoutController extends HttpServlet {
             session.invalidate(); // xoa session
         }
         
-         response.sendRedirect("login.jsp");
+         response.sendRedirect(UrlConstant.LOGIN_URL);
     }
 
     @Override

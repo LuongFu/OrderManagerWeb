@@ -1,5 +1,6 @@
 package controller;
 
+import constant.MessageConstant;
 import model.Item;
 import service.ItemService;
 import jakarta.servlet.ServletException;
@@ -25,14 +26,14 @@ public class ItemController extends HttpServlet {
                 // List all items
                 List<Item> itemList = itemService.getAllItems();
                 request.setAttribute("ListItem", itemList);
-                request.getRequestDispatcher("itemManager.jsp").forward(request, response);
+                request.getRequestDispatcher(UrlConstant.ITEM_MANGAGER_URL).forward(request, response);
                 break;
             case "UPDATE":
                 // Get the item details to update
                 int updateItemId = Integer.parseInt(request.getParameter("itemId"));
                 Item item = itemService.getItemById(updateItemId);
                 request.setAttribute("item", item);
-                request.getRequestDispatcher("editItem.jsp").forward(request, response);
+                request.getRequestDispatcher(UrlConstant.ITEM_EDIT_URL).forward(request, response);
                 break;
             case "DELETE":
                 // Delete the item by ID
@@ -79,8 +80,8 @@ public class ItemController extends HttpServlet {
         String createdBy = request.getParameter("createdBy");
 
         if (nameItem == null || price == null || description == null || createdBy == null) {
-            request.setAttribute("error", "All fields must be filled out.");
-            request.getRequestDispatcher("addItem.jsp").forward(request, response);
+            request.setAttribute("error", MessageConstant.NULL_ALARM);
+            request.getRequestDispatcher(UrlConstant.ITEM_ADD_URL).forward(request, response);
             return;
         }
 
@@ -91,9 +92,9 @@ public class ItemController extends HttpServlet {
         boolean isAdded = itemService.addItem(item);
 
         if (isAdded) {
-            request.setAttribute("message", "Item added successfully!");
+            request.setAttribute("message", MessageConstant.ADDED_SUCCESS);
         } else {
-            request.setAttribute("message", "Failed to add item.");
+            request.setAttribute("message", MessageConstant.ADDED_FAILED);
         }
 
         request.getRequestDispatcher("addItem.jsp").forward(request, response);
@@ -115,9 +116,8 @@ public class ItemController extends HttpServlet {
 
         if (isUpdated) {
             response.sendRedirect("item-manager?action=LIST");
-//            request.setAttribute("message", "Item updated successfully!");
         } else {
-            request.setAttribute("message", "Không thể cập nhật món.");
+            request.setAttribute("message", MessageConstant.UPDATED_FAILED);
         }
 
 //        request.getRequestDispatcher("itemManager.jsp").forward(request, response);
@@ -131,10 +131,10 @@ public class ItemController extends HttpServlet {
         boolean isDeleted = itemService.deleteItem(Integer.parseInt(itemId));
 
         if (isDeleted) {
-            request.setAttribute("message", "Item deleted successfully!");
+            request.setAttribute("message", MessageConstant.DELETED_SUCCESS);
         } else {
-            request.setAttribute("message", "Failed to delete item.");
+            request.setAttribute("message", MessageConstant.DELETED_FAILED);
         }
-        request.getRequestDispatcher("itemManager.jsp").forward(request, response);
+        request.getRequestDispatcher(UrlConstant.ITEM_MANGAGER_URL).forward(request, response);
     }
 }

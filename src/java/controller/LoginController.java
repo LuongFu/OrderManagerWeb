@@ -69,7 +69,7 @@ public class LoginController extends HttpServlet {
             if (isAdmin) {
                 response.sendRedirect(UrlConstant.ADMIN_URL); // Redirect to admin page
             } else {
-                response.sendRedirect(UrlConstant.WELCOME_URL); // Redirect to user dashboard
+                response.sendRedirect(UrlConstant.HOME_URL); // Redirect to user dashboard
             }
             // count login
             Integer loginCount = (Integer) session.getServletContext().getAttribute("loginCount");

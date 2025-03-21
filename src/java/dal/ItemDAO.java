@@ -4,6 +4,7 @@ import model.Item;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.Cart;
 
 public class ItemDAO extends DBContext {
 
@@ -12,7 +13,7 @@ public class ItemDAO extends DBContext {
     private final String ITEM_SELECT_BY_ID = "SELECT * FROM Item WHERE idItem = ?";
     private final String ITEM_UPDATE = "UPDATE Item SET nameItem = ?, price = ?, description = ?, createdBy = ? WHERE idItem = ?";
     private final String ITEM_DELETE = "DELETE FROM Item WHERE idItem = ?";
-
+    private final String ITEM_PRICE_TOTAL = "select price from Item where idItem=?";
     List<Item> itemList = new ArrayList<>();
 
     public List<Item> getAllItem() {
@@ -89,5 +90,55 @@ public class ItemDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public List<Cart> getCartProducts(ArrayList<Cart> cartList) {
+        List<Cart> book = new ArrayList<>();
+        try {
+            if (cartList.size() > 0) {
+                for (Cart item : cartList) {
+                    PreparedStatement ps = c.prepareStatement(ITEM_SELECT_BY_ID);
+                    ps.setInt(1, item.getItemId());
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        Cart row = new Cart();
+                        row.setItemId(rs.getInt("idItem"));
+                        row.setNameItem(rs.getString("nameItem"));
+                        row.setDescription(rs.getString("description"));
+                        row.setPrice(rs.getDouble("price")*item.getQuantity());
+                        row.setQuantity(item.getQuantity());
+                        book.add(row);
+                    }
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return book;
+    }
+    
+    public double getTotalCartPrice(ArrayList<Cart> cartList) {
+        double sum = 0;
+        try {
+            if (cartList.size() > 0) {
+                for (Cart item : cartList) {
+                    PreparedStatement ps = c.prepareStatement(ITEM_PRICE_TOTAL);
+                    ps.setInt(1, item.getItemId());
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        sum+=rs.getDouble("price")*item.getQuantity();
+                    }
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return sum;
     }
 }

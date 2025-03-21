@@ -19,4 +19,5 @@ public class MessageConstant {
     public static final String DELETED_FAILED = "Deleting failed.";
     public static final String UPDATED_SUCCESS = "Item has been changed.";
     public static final String UPDATED_FAILED = "Updating failed.";
+    public static final String NULL_ALARM = "All fields must be filled out.";
 }
