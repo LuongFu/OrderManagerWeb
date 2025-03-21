@@ -4,21 +4,24 @@
  */
 package model;
 
-import java.math.BigDecimal;
-
 /**
  *
  * @author Fu
  */
 public class Item {
+
     private int itemId;
     private String nameItem;
-    private BigDecimal price;
+    private String image;
+    private double price;
     private String description;
-    private Integer createBy;
-    
+    private String createBy;
+
+    public Item() {
+    }
+
     // this is for insert
-    public Item(String nameItem, BigDecimal price, String description, Integer createBy) {
+    public Item(String nameItem, double price, String description, String createBy) {
         this.nameItem = nameItem;
         this.price = price;
         this.description = description;
@@ -26,12 +29,29 @@ public class Item {
     }
 
     // this is for retrieving from DB
-    public Item(int itemId, String nameItem, BigDecimal price, String description, Integer createBy) {
+    public Item(int itemId, String nameItem, double price, String description, String createBy, String image) {
+        this.itemId = itemId;
+        this.image = image;
+        this.nameItem = nameItem;
+        this.price = price;
+        this.description = description;
+        this.createBy = createBy;
+    }
+    
+    public Item(int itemId, String nameItem, double price, String description, String createBy) {
         this.itemId = itemId;
         this.nameItem = nameItem;
         this.price = price;
         this.description = description;
         this.createBy = createBy;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getItemId() {
@@ -50,11 +70,11 @@ public class Item {
         this.nameItem = nameItem;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -66,12 +86,12 @@ public class Item {
         this.description = description;
     }
 
-    public Integer getCreateBy() {
+    public String getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(Integer createBy) {
+    public void setCreateBy(String createBy) {
         this.createBy = createBy;
     }
-    
+
 }

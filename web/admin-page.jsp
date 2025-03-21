@@ -13,6 +13,7 @@
     </head>
     <body>
         <h2>Hello, ${sessionScope.session_login}</h2>
-        <a href="item-manager.jsp">Lead to item manager</a>
+        
+        <a href="item-manager?action=LIST"> Lead to item manager</a>
     </body>
 </html>

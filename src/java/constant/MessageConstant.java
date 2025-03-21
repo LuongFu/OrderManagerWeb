@@ -14,6 +14,9 @@ public class MessageConstant {
     public static final String MESSAGE_SUCCESS = "Successfully.";
     public static final String MESSAGE_FAILED = "Failed.";
     public static final String ADDED_SUCCESS = "Item has been added.";
+    public static final String ADDED_FAILED = "Adding failed.";
     public static final String DELETED_SUCCESS = "Item has been delete.";
-    public static final String EDITED_SUCCESS = "Item has been changed.";
+    public static final String DELETED_FAILED = "Deleting failed.";
+    public static final String UPDATED_SUCCESS = "Item has been changed.";
+    public static final String UPDATED_FAILED = "Updating failed.";
 }
