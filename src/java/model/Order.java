@@ -6,8 +6,19 @@ public class Order extends Item {
     private int accountId;
     private int quantity;
     private String date;
-
+    private String status;
+    private double totalAmount;
+    
     public Order() {
+    }
+
+    public Order(int orderId, int accountId, int quantity, String date, String status, double totalAmount) {
+        this.orderId = orderId;
+        this.accountId = accountId;
+        this.quantity = quantity;
+        this.date = date;
+        this.status = status;
+        this.totalAmount = totalAmount;
     }
 
     public Order(int orderId, int accountId, int quantity, String date) {
@@ -23,6 +34,22 @@ public class Order extends Item {
         this.accountId = uid;
         this.quantity = quantity;
         this.date = date;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getAccountId() {

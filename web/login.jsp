@@ -1,5 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.*"%>
+<%@page import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	Account auth = (Account) request.getSession().getAttribute("auth");
+	if (auth != null) {
+		response.sendRedirect("index.jsp");
+	}
+	ArrayList<Cart> cart_list = (ArrayList<Cart>) session.getAttribute("cart-list");
+	if (cart_list != null) {
+		request.setAttribute("cart_list", cart_list);
+	}
+	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +19,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Đăng Nhập</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='styles.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/styles.css'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>

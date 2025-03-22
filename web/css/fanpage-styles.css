@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;700&family=Cinzel:wght@700&display=swap');
+
+body {  
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    background: url('../images/food-banner.png') no-repeat center center fixed;
+    background-size: cover;  /* Đảm bảo ảnh phủ kín toàn bộ màn hình */
+    background-position: center;  /* Căn giữa ảnh */
+    background-attachment: fixed;  /* Để ảnh không di chuyển khi cuộn trang */
+}
+
+.navbar {
+    background: rgba(255, 102, 0, 0.2) !important; /* Giảm độ mờ xuống một chút */
+    backdrop-filter: blur(6px);
+    transition: background 0.3s, backdrop-filter 0.3s;
+}
+
+.navbar.scrolled {
+    background: rgba(255, 102, 0, 0.6) !important;
+}
+
+.navbar-brand {
+    margin-left: auto; /* Đẩy logo sát về bên trái */
+}
+
+.navbar-brand img {
+    height: 80px;
+    transition: transform 0.3s;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1);
+}
+
+.navbar .container-fluid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Căn chỉnh logo, menu và nút đăng nhập */
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.navbar .d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 20px;
+}
+
+.nav-link {
+    font-size: 1.3rem;
+    font-weight: bold;
+    position: relative;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.nav-link::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 3px;
+    background-color: orange;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: orange !important;
+    transform: scale(1.1);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    text-align: center;
+    padding: 50px 0;
+    position: relative;
+    z-index: 1;  /* Đảm bảo nội dung luôn ở trên background */
+    color: white;  /* Màu chữ sáng để dễ đọc trên nền tối */
+}
+
+.hero-text {
+    max-width: 600px;
+    animation: fadeInLeft 1s ease-in-out;
+}
+
+.hero-text h2 {
+    font-size: 2.5rem;
+    font-family: 'Great Vibes', cursive; /* Font chữ mềm mại, nghệ thuật */
+    font-weight: 700;
+    color: #ffcc00;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6);
+    margin-bottom: 15px;
+}
+
+.hero-text h1 {
+    font-size: 8rem; /* Phóng to hơn nữa */
+    font-family: 'Lobster', cursive; /* Kiểu chữ nghệ thuật và sang trọng */
+    font-weight: 700;
+    text-transform: capitalize;
+    color: orange; /* Giữ màu cam */
+    text-shadow: 4px 4px 15px rgba(0, 0, 0, 0.6);
+    letter-spacing: 3px;
+    animation: smoothGlow 1.5s infinite alternate;
+}
+
+/* Hiệu ứng ánh sáng mềm */
+@keyframes smoothGlow {
+    from {
+        text-shadow: 4px 4px 15px rgba(0, 0, 0, 0.6);
+    }
+    to {
+        text-shadow: 6px 6px 20px rgba(255, 140, 0, 0.9);
+    }
+}
+
+.hero-text p {
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif; /* Font chữ sang trọng */
+    font-weight: 500;
+    color: #ffffff;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+    margin-top: 10px;
+}
+
+.hero-image {
+    display: none;  /* Ẩn ảnh gốc */
+}
+
+.search-bar {
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+/* Nút Login */
+.btn-outline-light {
+    color: white; /* Màu chữ mặc định */
+    border-color: white; /* Viền trắng */
+    transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+.btn-outline-light:hover {
+    color: orange !important; /* Khi rê chuột vào, đổi thành màu cam */
+    background-color: transparent; /* Giữ nền trong suốt */
+    border-color: orange !important; /* Viền cam */
+}
+
+/* Nút Sign Up */
+.btn-signup {
+    background-color: orange !important; /* Màu cam mặc định */
+    color: white !important; /* Chữ trắng */
+    border: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-signup:hover {
+    background-color: white !important; /* Khi rê chuột, nền trắng */
+    color: orange !important; /* Chữ cam */
+    border: 2px solid orange !important; /* Viền cam để đẹp hơn */
+}

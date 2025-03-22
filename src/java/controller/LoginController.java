@@ -45,12 +45,13 @@ public class LoginController extends HttpServlet {
         AccountRoleService accountRoleService = new AccountRoleService();
 
         Response<Account> accountResponse = accountService.checkLogin(username, password);
+        
         if (accountResponse.isSuccess()) {
 
             // Create session after successful login
             HttpSession session = request.getSession();
             session.setAttribute("session_login", username);
-
+            
             // Check for admin role
             boolean isAdmin = accountRoleService.isAdmin(username);
             session.setAttribute("isAdmin", isAdmin); // Store role in session for future checks
@@ -69,6 +70,7 @@ public class LoginController extends HttpServlet {
             if (isAdmin) {
                 response.sendRedirect(UrlConstant.ADMIN_URL); // Redirect to admin page
             } else {
+                session.setAttribute("auth", accountResponse.getData());
                 response.sendRedirect(UrlConstant.HOME_URL); // Redirect to user dashboard
             }
             // count login
@@ -80,7 +82,7 @@ public class LoginController extends HttpServlet {
 
         } else {
             // Login failed
-            System.out.println("DEBUG: Login failed for username: " + username);
+           
             request.setAttribute("error", MessageConstant.LOGIN_FAILED);
             request.getRequestDispatcher(UrlConstant.LOGIN_URL).forward(request, response);
         }

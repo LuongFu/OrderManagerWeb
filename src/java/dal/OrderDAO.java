@@ -3,29 +3,42 @@ package dal;
 import model.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.sql.Statement;
 import java.util.List;
 
 public class OrderDAO extends DBContext {
     
-    private final String ORDER_INSERT = "INSERT INTO [Order] (accountId, itemId, quantity, date) VALUES(?,?,?,?)";
+    private final String ORDER_INSERT = "INSERT INTO [Order] (accountId, itemId, quantity, date, TotalAmount) VALUES(?,?,?,?,?)";
     private final String ACCOUNT_ORDER = "SELECT * FROM Order WHERE accountId=? ORDER BY Order.orderId DESC";
     private final String CANCEL_ORDER = "DELETE FROM Order WHERE orderId=?";
-    
+    private final String UPDATE_ORDER_STATUS = "UPDATE [Order] SET [Status] = ? WHERE orderId = ?";
    
-    public boolean insertOrder(Order model) {
-        boolean result = false;
+    public int insertOrder(Order order) {
+        
         try {
-            PreparedStatement ps = c.prepareStatement(ORDER_INSERT);
-            ps.setInt(1, model.getAccountId());
-            ps.setInt(2, model.getItemId());  
-            ps.setInt(3, model.getQuantity());
-            ps.setString(4,  model.getDate());
-            ps.executeUpdate();
-            result = true;
+            PreparedStatement ps = c.prepareStatement(ORDER_INSERT, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, order.getAccountId());
+            ps.setInt(2, order.getItemId());  
+            ps.setInt(3, order.getQuantity());
+            ps.setString(4,  order.getDate());
+            ps.setDouble(5, order.getTotalAmount());
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating payment failed, no rows affected.");
+            }
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating payment failed, no ID obtained.");
+                }
+            
+            
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return -1;
         }
-        return result;
+        
     }
 
     public List<Order> userOrders(int userId) {
@@ -46,6 +59,7 @@ public class OrderDAO extends DBContext {
                 order.setPrice(item.getPrice()*rs.getInt("quantity"));
                 order.setQuantity(rs.getInt("quantity"));
                 order.setDate(rs.getString("date"));
+                order.setTotalAmount(itemId);
                 list.add(order);
                
             }
@@ -65,5 +79,18 @@ public class OrderDAO extends DBContext {
             e.printStackTrace();
             System.out.print(e.getMessage());
         }
+    }
+    
+    public boolean updateOrderStatus (Order order){
+        try{
+            PreparedStatement ps = c.prepareStatement(UPDATE_ORDER_STATUS);
+            ps.setString(1, order.getStatus());
+            ps.setInt(2, order.getOrderId());
+            return ps.executeUpdate() > 0;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 }

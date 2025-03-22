@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff3e0; /* Màu nền cam nhạt */
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    transition: background 0.3s ease-in-out;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.container:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    color: #FF4500;
+    font-size: 26px;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+h2:hover {
+    color: #CC3700;
+}
+
+.steps {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.step-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 30px; /* Khoảng cách giữa các bước */
+}
+
+.step {
+    background: #FFF5EB;
+    padding: 20px;
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    width: 220px;
+    text-align: center;
+}
+
+.step:hover {
+    background: #FFEBCC;
+    transform: scale(1.07);
+}
+
+.step img {
+    width: 180px; /* Tăng kích thước ảnh */
+    height: 160px;
+    border-radius: 15px; /* Bo góc nhẹ */
+    margin-bottom: 10px;
+}
+
+.step p {
+    font-size: 16px;
+    color: #444;
+    margin: 0;
+    font-weight: bold;
+}
+
+.arrow {
+    font-size: 36px;
+    color: #FF4500;
+    font-weight: bold;
+    margin: 0 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.step-row:hover .arrow {
+    transform: scale(1.2);
+}
+
+.note {
+    font-style: italic;
+    color: #666;
+    margin-top: 25px;
+    font-size: 18px;
+}
+
+
+.back-link a {
+    display: inline-block;
+    text-decoration: none;
+    color: #FF4500;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 12px 24px;
+    border: 2px solid #FF4500;
+    border-radius: 8px;
+    transition: color 0.3s ease-in-out, background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.back-link a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: #FF4500;
+    transform: scale(1.1);
+}
