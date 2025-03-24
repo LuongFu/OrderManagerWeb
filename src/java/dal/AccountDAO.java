@@ -18,6 +18,8 @@ public class AccountDAO extends DBContext {
 
     List<Account> list = new ArrayList();
     public Account a;
+    
+    private final String GET_EMAIL = "Select * from Account where email = ?";
 
     public List<Account> getAllAccount() {
         String sql = "SELECT * FROM Account";
@@ -33,6 +35,20 @@ public class AccountDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
+    }
+    
+    public Account getAccountByEmail(String email){
+        try{
+            PreparedStatement ps = c.prepareStatement(GET_EMAIL);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                return new Account(rs.getInt("userId"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("phone"));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Account checkLogin(String username, String password) {

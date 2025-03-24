@@ -25,7 +25,7 @@ public class AddToCartServlet extends HttpServlet {
 //        	out.print("add to cart servlet");
             Account auth = (Account) request.getSession().getAttribute("auth");
             
-            if(auth != null){
+//            if(auth != null){
                 ArrayList<Cart> cartList = new ArrayList<>();
             int id = Integer.parseInt(request.getParameter("id"));
             Cart cm = new Cart();
@@ -36,7 +36,7 @@ public class AddToCartServlet extends HttpServlet {
             if (cart_list == null) {
                 cartList.add(cm);
                 session.setAttribute("cart-list", cartList);
-                response.sendRedirect(UrlConstant.HOME_URL);
+                response.sendRedirect(UrlConstant.MENU_URL);
             } else {
                 cartList = cart_list;
 
@@ -50,12 +50,12 @@ public class AddToCartServlet extends HttpServlet {
 
                 if (!exist) {
                     cartList.add(cm);
-                    response.sendRedirect(UrlConstant.ORDERED_URL);
+                    response.sendRedirect(UrlConstant.MENU_URL);
                 }
             }
-            }else {
-                response.sendRedirect(UrlConstant.LOGIN_URL);
-            }
+//            }else {
+//                response.sendRedirect(UrlConstant.LOGIN_URL);
+//            }
             
         }
     }

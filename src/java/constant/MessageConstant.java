@@ -20,4 +20,7 @@ public class MessageConstant {
     public static final String UPDATED_SUCCESS = "Item has been changed.";
     public static final String UPDATED_FAILED = "Updating failed.";
     public static final String NULL_ALARM = "All fields must be filled out.";
+    public static final String ORDER_FAILED = "order failed.";
+    public static final String ORDER_SUCCESS = "order successfully.";
+   
 }

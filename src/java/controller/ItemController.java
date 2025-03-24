@@ -78,15 +78,16 @@ public class ItemController extends HttpServlet {
         String price = request.getParameter("price");
         String description = request.getParameter("description");
         String createdBy = request.getParameter("createdBy");
+        String image = request.getParameter("image");
 
-        if (nameItem == null || price == null || description == null || createdBy == null) {
+        if (nameItem == null || price == null || description == null || createdBy == null || image == null) {
             request.setAttribute("error", MessageConstant.NULL_ALARM);
             request.getRequestDispatcher(UrlConstant.ITEM_ADD_URL).forward(request, response);
             return;
         }
 
         double itemPrice = Double.parseDouble(price);
-        Item item = new Item(nameItem, itemPrice, description, createdBy);
+        Item item = new Item(nameItem, itemPrice, description, createdBy, image);
 
         ItemService itemService = new ItemService();
         boolean isAdded = itemService.addItem(item);
@@ -107,10 +108,10 @@ public class ItemController extends HttpServlet {
         String price = request.getParameter("price");
         String description = request.getParameter("description");
         String createdBy = request.getParameter("createdBy");
-
+        String image = request.getParameter("image");
         double itemPrice = Double.parseDouble(price);
 
-        Item item = new Item(Integer.parseInt(itemId), nameItem, itemPrice, description, createdBy);
+        Item item = new Item(Integer.parseInt(itemId), nameItem, itemPrice, description, createdBy, image);
         ItemService itemService = new ItemService();
         boolean isUpdated = itemService.updateItem(item);
 

@@ -22,4 +22,5 @@ public class UrlConstant {
     public static final String CART_URL = "cart.jsp";
     public static final String ORDERED_URL = "orders.jsp";
     public static final String PROJECT_NAME_URL = "OrderManagerSystemClone";
+     public static final String MENU_URL = "menu.jsp";
 }

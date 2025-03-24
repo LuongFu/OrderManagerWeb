@@ -1,10 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,16 +11,46 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import dal.OrderDAO;
 import jakarta.servlet.http.HttpSession;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import model.*;
 
 @WebServlet("/cart-check-out")
 public class CheckOutServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Account auth = (Account) session.getAttribute("auth");
+        if (auth == null) {
+            response.sendRedirect(UrlConstant.LOGIN_URL);
+            return;
+        }
 
-    private static final long serialVersionUID = 1L;
+        ArrayList<Cart> cartList = (ArrayList<Cart>) session.getAttribute("cart-list");
+        if (cartList == null || cartList.isEmpty()) {
+            response.sendRedirect(UrlConstant.CART_URL);
+            return;
+        }
 
+        // Tính tổng
+        double total = 0;
+        for (Cart c : cartList) {
+            total += c.getPrice() * c.getQuantity();
+        }
+
+        // Xoá giỏ (tùy bạn)
+        cartList.clear();
+
+        // Chuyển sang servlet vnpayajax, method=GET => userId=..., totalBill=...
+        response.sendRedirect("vnpayajax?userId=" + auth.getUserId() + "&totalBill=" + total);
+    }
+    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             ArrayList<Cart> cart_list = (ArrayList<Cart>) request.getSession().getAttribute("cart-list");
             Account auth = (Account) request.getSession().getAttribute("auth");
@@ -35,9 +62,9 @@ public class CheckOutServlet extends HttpServlet {
                     order.setQuantity(c.getQuantity());
                     order.setDate(formatter.format(date));
 
-                    OrderDAO oDao = new OrderDAO();
-                    int result = oDao.insertOrder(order);
-                    if (result >= 0) {
+                    OrderDAO oDAO = new OrderDAO();
+                    boolean result = oDAO.insertOrder(order);
+                    if (!result) {
                         break;
                     }
                 }
@@ -46,7 +73,6 @@ public class CheckOutServlet extends HttpServlet {
             } else if (auth == null) {
                 response.sendRedirect(UrlConstant.LOGIN_URL);
             } else {
-
                 response.sendRedirect(UrlConstant.CART_URL);
             }
         } catch (Exception e) {
@@ -54,38 +80,5 @@ public class CheckOutServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-        Account auth = (Account) session.getAttribute("auth");
-
-        if (auth == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        ArrayList<Cart> cartList = (ArrayList<Cart>) session.getAttribute("cart-list");
-        if (cartList == null || cartList.isEmpty()) {
-            response.sendRedirect("cart.jsp");
-            return;
-        }
-
-        double totalBill = 0;
-        OrderDAO orderDAO = new OrderDAO();
-        for (Cart cart : cartList) {
-            totalBill += cart.getPrice() * cart.getQuantity();
-            Order order = new Order();
-            order.setAccountId(auth.getUserId());
-            order.setItemId(cart.getItemId());
-            order.setQuantity(cart.getQuantity());
-            order.setTotalAmount(cart.getPrice() * cart.getQuantity());
-            orderDAO.insertOrder(order);
-        }
-
-        response.sendRedirect("vnpayajax?userId=" + auth.getUserId() + "&totalBill=" + totalBill);
-
-    }
-
 }
+

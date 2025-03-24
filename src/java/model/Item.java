@@ -38,6 +38,14 @@ public class Item {
         this.createBy = createBy;
     }
     
+    public Item(String nameItem, double price, String description, String createBy, String image) {
+        this.image = image;
+        this.nameItem = nameItem;
+        this.price = price;
+        this.description = description;
+        this.createBy = createBy;
+    }
+    
     public Item(int itemId, String nameItem, double price, String description, String createBy) {
         this.itemId = itemId;
         this.nameItem = nameItem;

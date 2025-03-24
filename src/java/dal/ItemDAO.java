@@ -9,9 +9,9 @@ import model.Cart;
 public class ItemDAO extends DBContext {
 
     private final String ITEM_SELECT_ALL = "SELECT * FROM Item";
-    private final String ITEM_INSERT = "INSERT INTO Item (nameItem, price, description, createdBy) VALUES (?, ?, ?, ?)";
+    private final String ITEM_INSERT = "INSERT INTO Item (nameItem, price, description, createdBy, image) VALUES (?, ?, ?, ?, ?)";
     private final String ITEM_SELECT_BY_ID = "SELECT * FROM Item WHERE idItem = ?";
-    private final String ITEM_UPDATE = "UPDATE Item SET nameItem = ?, price = ?, description = ?, createdBy = ? WHERE idItem = ?";
+    private final String ITEM_UPDATE = "UPDATE Item SET nameItem = ?, price = ?, description = ?, createdBy = ?, image = ? WHERE idItem = ?";
     private final String ITEM_DELETE = "DELETE FROM Item WHERE idItem = ?";
     private final String ITEM_PRICE_TOTAL = "select price from Item where idItem=?";
     List<Item> itemList = new ArrayList<>();
@@ -25,7 +25,8 @@ public class ItemDAO extends DBContext {
                         rs.getString("nameItem"),
                         rs.getDouble("price"),
                         rs.getString("description"),
-                        rs.getString("createdBy"));
+                        rs.getString("createdBy"),
+                        rs.getString("image")); // Gán giá trị image từ database
                 itemList.add(i);
             }
         } catch (Exception e) {
@@ -44,7 +45,8 @@ public class ItemDAO extends DBContext {
                         rs.getString("nameItem"),
                         rs.getDouble("price"),
                         rs.getString("description"),
-                        rs.getString("createdBy"));
+                        rs.getString("createdBy"),
+                        rs.getString("image")); // moi add
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,6 +61,7 @@ public class ItemDAO extends DBContext {
             ps.setDouble(2, item.getPrice());
             ps.setString(3, item.getDescription());
             ps.setString(4, item.getCreateBy());
+            ps.setString(5, item.getImage()); // moi add
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +76,8 @@ public class ItemDAO extends DBContext {
             ps.setDouble(2, item.getPrice());
             ps.setString(3, item.getDescription());
             ps.setString(4, item.getCreateBy());
-            ps.setInt(5, item.getItemId());
+            ps.setString(5, item.getImage()); // moi add
+            ps.setInt(6, item.getItemId());
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,7 +95,7 @@ public class ItemDAO extends DBContext {
         }
         return false;
     }
-    
+
     public List<Cart> getCartProducts(ArrayList<Cart> cartList) {
         List<Cart> book = new ArrayList<>();
         try {
@@ -105,7 +109,8 @@ public class ItemDAO extends DBContext {
                         row.setItemId(rs.getInt("idItem"));
                         row.setNameItem(rs.getString("nameItem"));
                         row.setDescription(rs.getString("description"));
-                        row.setPrice(rs.getDouble("price")*item.getQuantity());
+                        row.setImage(rs.getString("image")); // moi add
+                        row.setPrice(rs.getDouble("price") * item.getQuantity());
                         row.setQuantity(item.getQuantity());
                         book.add(row);
                     }
@@ -119,7 +124,7 @@ public class ItemDAO extends DBContext {
         }
         return book;
     }
-    
+
     public double getTotalCartPrice(ArrayList<Cart> cartList) {
         double sum = 0;
         try {
@@ -129,7 +134,7 @@ public class ItemDAO extends DBContext {
                     ps.setInt(1, item.getItemId());
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
-                        sum+=rs.getDouble("price")*item.getQuantity();
+                        sum += rs.getDouble("price") * item.getQuantity();
                     }
 
                 }

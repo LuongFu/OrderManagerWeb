@@ -1,5 +1,6 @@
 package controller;
 
+import constant.MessageConstant;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -19,7 +20,8 @@ import model.*;
 public class OrderNowServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
+    
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -27,7 +29,7 @@ public class OrderNowServlet extends HttpServlet {
             Date date = new Date();
 
             Account auth = (Account) request.getSession().getAttribute("auth");
-
+            Order order = (Order) request.getSession().getAttribute("order");
             if (auth != null) {
                 String productId = request.getParameter("id");
                 int productQuantity = Integer.parseInt(request.getParameter("quantity"));
@@ -39,10 +41,12 @@ public class OrderNowServlet extends HttpServlet {
                 orderModel.setAccountId(auth.getUserId());
                 orderModel.setQuantity(productQuantity);
                 orderModel.setDate(formatter.format(date));
+                orderModel.setStatus(order.getStatus());
+                orderModel.setTotalAmount(order.getTotalAmount());
 
                 OrderDAO orderDAO = new OrderDAO();
-                int result = orderDAO.insertOrder(orderModel);
-                if (result >= 0) {
+                boolean result = orderDAO.insertOrder(orderModel);
+                if (result) {
                     ArrayList<Cart> cart_list = (ArrayList<Cart>) request.getSession().getAttribute("cart-list");
                     if (cart_list != null) {
                         for (Cart c : cart_list) {
@@ -54,7 +58,7 @@ public class OrderNowServlet extends HttpServlet {
                     }
                     response.sendRedirect(UrlConstant.ORDERED_URL);
                 } else {
-                    out.println("order failed");
+                    out.println(MessageConstant.ORDER_FAILED);
                 }
             } else {
                 response.sendRedirect(UrlConstant.LOGIN_URL);
@@ -76,7 +80,7 @@ public class OrderNowServlet extends HttpServlet {
         Account auth = (Account) session.getAttribute("auth");
 
         if (auth == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect(UrlConstant.CART_URL);
             return;
         }
 
@@ -92,9 +96,9 @@ public class OrderNowServlet extends HttpServlet {
         order.setTotalAmount(totalBill);
 
         OrderDAO orderDAO = new OrderDAO();
-        int orderId = orderDAO.insertOrder(order);
+//        int orderId = orderDAO.insertOrder(order);
 
-        response.sendRedirect("vnpayajax?orderId=" + orderId + "&totalBill=" + totalBill);
+        response.sendRedirect("orders.jsp");
     }
 
 }

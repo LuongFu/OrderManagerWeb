@@ -4,13 +4,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Item Manager</title>
         <!--<script src="script.js"></script>-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     </head>
     <h2>Hello, admin ${sessionScope.session_login}</h2>
+    <a href="logout" class="nav-link logout-link">Sign out</a>
     <body class="container mt-4">
         <h2 class="text-center">Item Manager</h2>
 
@@ -21,7 +22,7 @@
             <label for="sortBy" class="mr-2">Sắp xếp theo:</label>
             <select id="sortBy" class="form-control mr-2">
                 <option value="nameItem">Tên món</option>
-                <option value="price">Giá</option>
+                <option value="price">Giá (VND)</option>
                 <option value="createBy">Tạo bởi</option>
             </select>
 
@@ -53,6 +54,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
+                        <th>Hình ảnh</th>
                         <th>Tên món</th>
                         <th>Giá</th>
                         <th>Mô tả</th>
@@ -65,6 +67,8 @@
                     <c:forEach var="item" items="${requestScope.ListItem}">
                         <tr>
                             <td>${item.itemId}</td>
+                            <td><img class="card-img-top" width="auto" height="100px" src="food/${item.image}"
+                                     alt="Card image cap"></td>
                             <td>${item.nameItem}</td>
                             <td>${item.price}</td>
                             <td>${item.description}</td>

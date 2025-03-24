@@ -68,7 +68,7 @@ public class LoginController extends HttpServlet {
 
             // Redirect based on user role
             if (isAdmin) {
-                response.sendRedirect(UrlConstant.ADMIN_URL); // Redirect to admin page
+                response.sendRedirect("item-manager?action=LIST"); // Redirect to admin page
             } else {
                 session.setAttribute("auth", accountResponse.getData());
                 response.sendRedirect(UrlConstant.HOME_URL); // Redirect to user dashboard
