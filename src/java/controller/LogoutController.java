@@ -26,7 +26,7 @@ public class LogoutController extends HttpServlet {
         try{
             if(request.getSession().getAttribute("auth")!=null){
                 request.getSession().removeAttribute("auth");
-                response.sendRedirect(UrlConstant.LOGIN_URL);
+                response.sendRedirect(UrlConstant.HOME_URL);
             }else{
                 response.sendRedirect(UrlConstant.HOME_URL);
             }

@@ -1,0 +1,226 @@
+/* Định dạng chung */
+body {
+    background-color: #fffaf0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.header {
+    background-color: #e67e22;
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card sản phẩm */
+.card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    background: #ffffff;
+    border-radius: 10px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Hình ảnh sản phẩm */
+.card img {
+    border-radius: 10px 10px 0 0;
+    object-fit: cover;
+    height: 150px;
+    width: 100%;
+}
+
+/* Tiêu đề sản phẩm */
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d35400;
+    text-align: center;
+}
+
+/* Giá sản phẩm */
+.card-subtitle {
+    font-size: 16px;
+    color: #e67e22;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Mô tả sản phẩm */
+.card-text {
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+/* Căn chỉnh container chứa nút */
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
+    padding: 6px 0px;
+}
+
+/* Chỉnh tỷ lệ 6:4 với kích thước cố định */
+.btn-dark {
+    flex: 5;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    transition: 0.3s;
+    flex-basis: 50%;
+    min-width: 100px;
+    max-width: 150px;
+}
+
+.btn-dark:hover {
+    background-color: #d35400;
+}
+
+.btn-primary {
+    flex: 4;
+    background-color: #ff9800;
+    border: none;
+    transition: 0.3s;
+    flex-basis: 40%;
+    min-width: 80px;
+    max-width: 100px;
+}
+
+.btn-primary:hover {
+    background-color: #f57c00;
+}
+
+/* Chỉnh kích thước và căn chỉnh chữ */
+.btn-dark,
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 40px;
+    padding: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Căn chỉnh card sản phẩm */
+.card-body {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Căn chỉnh container */
+.container {
+    max-width: 1200px;
+}
+
+.row {
+    justify-content: center;
+}
+
+/* Phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 20px 0;
+}
+
+.pagination li {
+    margin: 0 5px;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #e67e22; /* Màu cam */
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: 2px solid #e67e22; /* Viền cam */
+    border-radius: 5px;
+    transition: 0.3s;
+    background-color: white;
+}
+
+.pagination a:hover {
+    background-color: #e67e22;
+    color: white;
+}
+
+.pagination .active a {
+    background-color: #e67e22 !important;
+    color: white !important;
+    border: none; /* Remove the border */
+}
+
+/* Footer */
+.footer {
+    background-color: #FFA502; /* Đổi màu nền footer thành cam đậm */
+    color: white;
+    padding: 10px 0;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.company-info {
+    flex: 6;
+}
+.company-info img {
+    height: 50px;
+}
+.company-info p {
+    margin: 5px 0;
+}
+
+.partners h4 {
+    flex: 4;
+    text-align: center;
+    font-size: 14px;
+}
+.partner-logos {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    max-width: 100%;
+    align-items: center;
+}
+.partner-logos img {
+    height: 40px;
+    border-radius: 50%;
+}
+
+.certification {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.certification img {
+    height: 50px;
+}

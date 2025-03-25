@@ -47,6 +47,7 @@
                     <option value="nem_chua.jpg">Nem chua</option>
                     <option value="goi_cuon.jpg">Gỏi</option>
                     <option value="nem_ran.jpg">Nem rán</option>
+                    <option value="kem.jpg">Kem</option>
                 </select>
             </div>
 

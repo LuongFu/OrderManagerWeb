@@ -21,11 +21,11 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul class="navbar-nav gap-4">
-                        <li class="nav-item"><a class="nav-link" href="#">Home<span class="underline"></span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.jsp">Home<span class="underline"></span></a></li>
                         <li class="nav-item"><a class="nav-link" href="#">About<span class="underline"></span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.jsp">Menu<span class="underline"></span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Order<span class="underline"></span></a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Support<span class="underline"></span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="menu.jsp">Menu<span class="underline"></span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="orders.jsp">Order<span class="underline"></span></a></li>
+                        <li class="nav-item"><a class="nav-link" href="support.jsp">Support<span class="underline"></span></a></li>
                     </ul>
                 </div>
                 <div class="d-flex ms-auto">

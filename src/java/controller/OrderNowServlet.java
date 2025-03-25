@@ -1,8 +1,8 @@
 package controller;
 
-import constant.MessageConstant;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
@@ -13,40 +13,41 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import dal.*;
-import jakarta.servlet.http.HttpSession;
 import model.*;
 
 @WebServlet("/order-now")
 public class OrderNowServlet extends HttpServlet {
-
     private static final long serialVersionUID = 1L;
-    
-    @Override
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         try (PrintWriter out = response.getWriter()) {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
 
             Account auth = (Account) request.getSession().getAttribute("auth");
-            Order order = (Order) request.getSession().getAttribute("order");
+
             if (auth != null) {
                 String productId = request.getParameter("id");
                 int productQuantity = Integer.parseInt(request.getParameter("quantity"));
                 if (productQuantity <= 0) {
                     productQuantity = 1;
                 }
+
+                // Tạo đối tượng đơn hàng
                 Order orderModel = new Order();
-                orderModel.setItemId(Integer.parseInt(productId));
                 orderModel.setAccountId(auth.getUserId());
+                orderModel.setItemId(Integer.parseInt(productId));
                 orderModel.setQuantity(productQuantity);
                 orderModel.setDate(formatter.format(date));
-                orderModel.setStatus(order.getStatus());
-                orderModel.setTotalAmount(order.getTotalAmount());
+                orderModel.setStatus("Completed");
 
+                // Lưu đơn hàng vào cơ sở dữ liệu
                 OrderDAO orderDAO = new OrderDAO();
                 boolean result = orderDAO.insertOrder(orderModel);
                 if (result) {
+                    // Xóa sản phẩm khỏi giỏ hàng
                     ArrayList<Cart> cart_list = (ArrayList<Cart>) request.getSession().getAttribute("cart-list");
                     if (cart_list != null) {
                         for (Cart c : cart_list) {
@@ -56,49 +57,186 @@ public class OrderNowServlet extends HttpServlet {
                             }
                         }
                     }
-                    response.sendRedirect(UrlConstant.ORDERED_URL);
+                    response.sendRedirect("orders.jsp");
                 } else {
-                    out.println(MessageConstant.ORDER_FAILED);
+                    out.println("Order failed.");
                 }
             } else {
-                response.sendRedirect(UrlConstant.LOGIN_URL);
+                response.sendRedirect("login.jsp");
             }
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
 
-        int itemId = Integer.parseInt(request.getParameter("id"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        Account auth = (Account) request.getSession().getAttribute("auth");
 
-        HttpSession session = request.getSession();
-        Account auth = (Account) session.getAttribute("auth");
-
-        if (auth == null) {
-            response.sendRedirect(UrlConstant.CART_URL);
-            return;
+        if (auth != null) {
+            // Lấy danh sách đơn hàng của người dùng
+            OrderDAO orderDAO = new OrderDAO();
+            List<Order> orders = orderDAO.userOrders(auth.getUserId());
+            
+            // Chuyển dữ liệu vào JSP
+            request.setAttribute("orders", orders);
+            request.getRequestDispatcher("orders.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("login.jsp");
         }
-
-        ItemDAO itemDAO = new ItemDAO();
-        Item item = itemDAO.getItemById(itemId);
-
-        double totalBill = item.getPrice() * quantity;
-
-        Order order = new Order();
-        order.setAccountId(auth.getUserId());
-        order.setItemId(itemId);
-        order.setQuantity(quantity);
-        order.setTotalAmount(totalBill);
-
-        OrderDAO orderDAO = new OrderDAO();
-//        int orderId = orderDAO.insertOrder(order);
-
-        response.sendRedirect("orders.jsp");
     }
-
 }
+
+//@WebServlet("/order-now")
+//public class OrderNowServlet extends HttpServlet {
+//
+//    private static final long serialVersionUID = 1L;
+//
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        
+//        try (PrintWriter out = response.getWriter()) {
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//            Date date = new Date();
+//
+//            Account auth = (Account) request.getSession().getAttribute("auth");
+//
+//            if (auth != null) {
+//                String productId = request.getParameter("id");
+//                int productQuantity = Integer.parseInt(request.getParameter("quantity"));
+//                if (productQuantity <= 0) {
+//                    productQuantity = 1;
+//                }
+//
+//                // Tạo đối tượng đơn hàng
+//                Order orderModel = new Order();
+//                orderModel.setAccountId(auth.getUserId());
+//                orderModel.setItemId(Integer.parseInt(productId));
+//                orderModel.setQuantity(productQuantity);
+//                orderModel.setDate(formatter.format(date));
+//                orderModel.setStatus("Completed");
+//
+//                // Lưu đơn hàng vào cơ sở dữ liệu
+//                OrderDAO orderDAO = new OrderDAO();
+//                boolean result = orderDAO.insertOrder(orderModel);
+//                if (result) {
+//                    // Xóa sản phẩm khỏi giỏ hàng
+//                    ArrayList<Cart> cart_list = (ArrayList<Cart>) request.getSession().getAttribute("cart-list");
+//                    if (cart_list != null) {
+//                        for (Cart c : cart_list) {
+//                            if (c.getItemId() == Integer.parseInt(productId)) {
+//                                cart_list.remove(cart_list.indexOf(c));
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    response.sendRedirect("orders.jsp");
+//                } else {
+//                    out.println("Order failed.");
+//                }
+//            } else {
+//                response.sendRedirect("login.jsp");
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//
+//        Account auth = (Account) request.getSession().getAttribute("auth");
+//
+//        if (auth != null) {
+//            // Lấy danh sách đơn hàng của người dùng
+//            OrderDAO orderDAO = new OrderDAO();
+//            List<Order> orders = orderDAO.userOrders(auth.getUserId());
+//            
+//            // Chuyển dữ liệu vào JSP
+//            request.setAttribute("orders", orders);
+//            request.getRequestDispatcher("orders.jsp").forward(request, response);
+//        } else {
+//            response.sendRedirect("login.jsp");
+//        }
+//    }
+
+
+    
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        
+//        try (PrintWriter out = response.getWriter()) {
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//            Date date = new Date();
+//
+//            Account auth = (Account) request.getSession().getAttribute("auth");
+//
+//            if (auth != null) {
+//                String productId = request.getParameter("id");
+//                int productQuantity = Integer.parseInt(request.getParameter("quantity"));
+//                if (productQuantity <= 0) {
+//                    productQuantity = 1;
+//                }
+//                Item item = new Item(); // debug
+//                Order orderModel = new Order();
+//                orderModel.setAccountId(auth.getUserId());
+//                orderModel.setItemId(Integer.parseInt(productId));
+//                orderModel.setQuantity(productQuantity);
+//                orderModel.setDate(formatter.format(date));
+//                orderModel.setStatus("Completed");
+////                double totalAmount = item.getPrice() * orderModel.getQuantity();  // Tính tổng tiền cho đơn hàng
+////                orderModel.setTotalAmount(totalAmount);
+//                OrderDAO orderDAO = new OrderDAO();
+//                boolean result = orderDAO.insertOrder(orderModel);
+//                if (result) {
+//                    ArrayList<Cart> cart_list = (ArrayList<Cart>) request.getSession().getAttribute("cart-list");
+//                    if (cart_list != null) {
+//                        for (Cart c : cart_list) {
+//                            if (c.getItemId() == Integer.parseInt(productId)) {
+//                                cart_list.remove(cart_list.indexOf(c));
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    response.sendRedirect("orders.jsp");
+//                } else {
+//                    out.println("order failed");
+//                }
+//            } else {
+//                response.sendRedirect("login.jsp");
+//            }
+//
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//    }
+
+
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//    response.setContentType("text/html;charset=UTF-8");
+//
+//    Account auth = (Account) request.getSession().getAttribute("auth");
+//
+//    if (auth != null) {
+//        int userId = auth.getUserId();
+//        
+//        // Lấy danh sách đơn hàng của người dùng
+//        OrderDAO orderDAO = new OrderDAO();
+//        List<Order> orders = orderDAO.getOrdersByUserId(userId);
+//        
+//        // Chuyển dữ liệu vào JSP
+//        request.setAttribute("orders", orders);
+//        request.getRequestDispatcher("orders.jsp").forward(request, response);
+//    } else {
+//        response.sendRedirect("login.jsp");
+//    }
+//}
+
+//}

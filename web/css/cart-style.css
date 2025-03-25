@@ -1,0 +1,167 @@
+/* Reset mặc định */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fffaf0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container chính */
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Tiêu đề */
+h3 {
+    color: #ff6f00;
+    font-weight: bold;
+}
+
+/* Bảng giỏ hàng */
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.thead-light {
+    background-color: #ff9800;
+    color: white;
+}
+
+/* Nút bấm */
+.btn-primary {
+    background-color: #ff6f00;
+    border-color: #ff6f00;
+}
+
+.btn-primary:hover {
+    background-color: #e65100;
+    border-color: #e65100;
+}
+
+.btn-danger {
+    background-color: #d84315;
+    border-color: #d84315;
+}
+
+.btn-danger:hover {
+    background-color: #bf360c;
+    border-color: #bf360c;
+}
+
+/* Nút tăng/giảm số lượng */
+.btn-incre, .btn-decre {
+    color: #ff6f00;
+    background: none;
+    border: none;
+    font-size: 22px;
+}
+
+.btn-incre:hover, .btn-decre:hover {
+    color: #e65100;
+}
+
+/* Form nhập số lượng */
+input[name="quantity"] {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ff9800;
+    border-radius: 5px;
+}
+
+/* Hiệu ứng hover trên hàng của bảng */
+tbody tr:hover {
+    background-color: #fff3e0;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #FFA502; /* Cam đậm */
+    color: white;
+    padding: 20px 0;
+    font-size: 14px;
+    width: 100%;
+    margin-top: auto; /* Giúp footer luôn đẩy xuống cuối */
+}
+
+.footer .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.company-info {
+    flex: 6;
+}
+.company-info img {
+    height: 50px;
+}
+.company-info p {
+    margin: 5px 0;
+}
+
+.partners {
+    flex: 4;
+    text-align: center;
+}
+.partners h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.partner-logos {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    align-items: center;
+}
+.partner-logos img {
+    height: 40px;
+    border-radius: 50%;
+}
+
+.certification {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.certification img {
+    height: 50px;
+}
+
+/* Đảm bảo footer nằm dưới cùng trang */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1; /* Đảm bảo phần nội dung đẩy footer xuống */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .partner-logos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+

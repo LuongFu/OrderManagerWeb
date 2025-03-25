@@ -14,6 +14,7 @@ public class Account {
     private String password;
     private String email;
     private String phone;
+    private String cash;
 
     public Account(int userId, String username, String password, String email, String phone) {
         this.userId = userId;
@@ -21,6 +22,23 @@ public class Account {
         this.password = password;
         this.email = email;
         this.phone = phone;
+    }
+
+    public Account(int userId, String username, String password, String email, String phone, String cash) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.cash = cash;
+    }
+
+    public String getCash() {
+        return cash;
+    }
+
+    public void setCash(String cash) {
+        this.cash = cash;
     }
 
     public int getUserId() {

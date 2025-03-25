@@ -34,7 +34,7 @@
 
             <button type="button" class="btn btn-primary" onclick="sortTable()">Sắp xếp</button>
             <a href="addItem.jsp" class="btn btn-success mb-3">Thêm món mới</a>
-            <a href="staticstic.jsp" class="btn btn-success mb-3">Xem thống kê</a>
+            <a href="statistics.jsp" class="btn btn-success mb-3">Xem thống kê</a>
         </div>
 
         <h3 class="mt-4 text-center">Item List</h3>

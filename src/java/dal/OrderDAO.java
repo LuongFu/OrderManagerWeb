@@ -7,12 +7,13 @@ import java.sql.Statement;
 import java.util.List;
 
 public class OrderDAO extends DBContext {
-
-    private final String ORDER_INSERT = "INSERT INTO [Order] (accountId, itemId, quantity, date, Status, TotalAmount) VALUES(?,?,?,?,?,?)";
-    private final String ACCOUNT_ORDER = "SELECT * FROM Order WHERE accountId=? ORDER BY Order.orderId DESC";
+    
+    private final String ORDER_INSERT = "INSERT INTO [Order] (accountId, itemId, quantity, date, Status) VALUES(?,?,?,?,?)";
+    private final String ACCOUNT_ORDER = "SELECT * FROM [Order] WHERE accountId=? ORDER BY orderId DESC";
     private final String CANCEL_ORDER = "DELETE FROM Order WHERE orderId=?";
     private final String UPDATE_ORDER_STATUS = "UPDATE [Order] SET [Status] = ? WHERE orderId = ?";
-
+   
+    
     public boolean insertOrder(Order order) {
         boolean result = false;
         try {
@@ -22,7 +23,7 @@ public class OrderDAO extends DBContext {
             ps.setInt(3, order.getQuantity());
             ps.setString(4, order.getDate());
             ps.setString(5, order.getStatus());
-            ps.setDouble(6, order.getTotalAmount());
+//            ps.setDouble(6, order.getTotalAmount());
             ps.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -49,7 +50,8 @@ public class OrderDAO extends DBContext {
                 order.setPrice(item.getPrice() * rs.getInt("quantity"));
                 order.setQuantity(rs.getInt("quantity"));
                 order.setDate(rs.getString("date"));
-                order.setTotalAmount(itemId);
+                order.setStatus("Completed");
+//                order.setTotalAmount(itemId);
                 list.add(order);
 
             }
@@ -83,4 +85,56 @@ public class OrderDAO extends DBContext {
         }
         return false;
     }
+    
+    // Trong OrderDAO.java
+public List<Order> getOrdersByUserId(int userId) {
+    List<Order> orders = new ArrayList<>();
+    try {
+        String query = "SELECT * FROM [Order] WHERE accountId = ? ORDER BY orderId DESC";
+        PreparedStatement ps = c.prepareStatement(query);
+        ps.setInt(1, userId);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Order order = new Order();
+            order.setOrderId(rs.getInt("orderId"));
+            order.setAccountId(rs.getInt("accountId"));
+            order.setItemId(rs.getInt("itemId"));
+            order.setQuantity(rs.getInt("quantity"));
+            order.setDate(rs.getString("date"));
+            order.setStatus(rs.getString("status"));
+
+            // Lấy thông tin về món ăn từ bảng Item
+            ItemDAO itemDAO = new ItemDAO();
+            Item item = itemDAO.getItemById(order.getItemId());
+            order.setNameItem(item.getNameItem());
+            order.setPrice(item.getPrice() * order.getQuantity()); // Tính tổng giá của sản phẩm
+            orders.add(order);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return orders;
+}
+
+public double getTotalAmountForAllOrders() {
+    double totalAmount = 0.0;
+    try {
+        String query = "SELECT SUM(i.price * o.quantity) AS totalAmount " +
+                       "FROM [Order] o " +
+                       "JOIN Item i ON o.itemId = i.idItem " +
+                       "WHERE o.Status = 'Completed'";
+        PreparedStatement ps = c.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            totalAmount = rs.getDouble("totalAmount");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return totalAmount;
+}
+
+
 }

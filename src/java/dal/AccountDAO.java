@@ -20,7 +20,7 @@ public class AccountDAO extends DBContext {
     public Account a;
     
     private final String GET_EMAIL = "Select * from Account where email = ?";
-
+    private final String ADD_CASH = "UPDATE Account SET cash = cash + ? WHERE userId = ?";
     public List<Account> getAllAccount() {
         String sql = "SELECT * FROM Account";
 
@@ -133,4 +133,22 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
+    
+    public boolean addCashById(int userId, double amount) {
+    boolean result = false;
+    try {
+        PreparedStatement ps = c.prepareStatement(ADD_CASH);
+        ps.setDouble(1, amount);  // Set số tiền cần thêm vào tài khoản
+        ps.setInt(2, userId);     // Set userId của tài khoản
+
+        int rowsUpdated = ps.executeUpdate();
+        if (rowsUpdated > 0) {
+            result = true;  // Cập nhật thành công
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return result;
+}
+
 }
